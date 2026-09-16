@@ -1,0 +1,132 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+
+            <div class="example-container">
+                <div class="example-content bg-light">
+                    <div class="section-description d-flex align-items-center">
+                        <div class="section-description-content flex-grow-1">
+                            <h1>Activity Reports</h1>
+                        </div>
+                        <div class="section-description-actions">
+                            <a href="{% url 'generate_report' %}" class="btn btn-dark">
+                                <i class="material-icons-outlined">print</i> My Reports
+                            </a>
+                            <a href="{% url 'report_department' %}" class="btn btn-dark">
+                                <i class="material-icons-outlined">file_download</i> Generate Report
+                            </a>
+                            <a href="{% url 'strategic_objective_create' %}" class="btn btn-green">
+                                <i class="material-icons"></i> Print
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if page_name == 'generate_department_report' %}
+            <div class="container mt-5">
+                <h5 class="text-green fw-bold">Generate Report</h5>
+                <div class="list-group">
+                    <form action="{% url 'report_department' %}" method="GET" class="form-inline">
+                        <div class="row g-3 align-items-center">
+                            <!-- Dropdown for Years -->
+                            <div class="col-md-6">
+                                <label for="year" class="form-label text-green">Select Year</label>
+                                <select name="year" id="year" class="form-select">
+                                    {% for year in years %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Dropdown for Report Period -->
+                            <div class="col-md-6">
+                                <label for="report_period" class="form-label text-green">Select Report Period</label>
+                                <select name="report_period" id="report_period" class="form-select">
+                                    <option value="First Quarter">First Quarter</option>
+                                    <option value="Second Quarter">Second Quarter</option>
+                                    <option value="Third Quarter">Third Quarter</option>
+                                    <option value="Fourth Quarter">Fourth Quarter</option>
+                                    <option value="Full Year">Full Year</option>
+                                </select>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-dark w-100">Generate Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="table-container">
+                <table class="table table-striped mt-5">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Activity</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Total Spent</th>
+                            <th>Details</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in activities %}
+                        {% with activity.reports.all|first as report %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ activity.name }}</td>
+                            <td>
+                                {% if report and activity.status == 1 %}
+                                {{ report.report_date }}
+                                {% else %}
+                                <form method="post" action="{% url 'submit_report' activity.id %}">
+                                    {% csrf_token %}
+                                    {{ form.report_date }}
+                                    {% endif %}
+                            </td>
+                            <td>
+                                {% if report and activity.status == 1 %}
+                                {{ report.goal_score }}
+                                {% else %}
+                                {{ form.goal_score }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if report and activity.status == 1 %}
+                                {{ report.actual_spent }}
+                                {% else %}
+                                {{ form.actual_spent }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if report and activity.status == 1 %}
+                                {{ report.report_details }}
+                                {% else %}
+                                {{ form.report_details }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if report and activity.status == 1 %}
+                                <span class="badge bg-success">Submitted</span>
+                                {% else %}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

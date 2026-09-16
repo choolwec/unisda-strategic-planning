@@ -1,0 +1,84 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="example-container">
+            <div class="example-content bg-light">
+                <div class="section-description d-flex align-items-center">
+                    <div class="section-description-content flex-grow-1">
+                        <h1 class="">DePartments</h1>
+                    </div>
+                    <div class="section-description-actions">
+
+                        <a href="{% url 'designation_create' %}" class="btn btn-green">
+                            <i class="material-icons">add</i>Create Department
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-5 p-0">
+            <table id="result_list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <!-- Select All Checkbox -->
+                        <th class="djn-checkbox-select-all" tabindex="0" rowspan="1" colspan="1">
+                            <div class="text">
+                                <span>
+                                    <input type="checkbox" id="action-toggle"
+                                        aria-label="Select all objects on this page for an action">
+                                </span>
+                            </div>
+                        </th>
+
+                        <!-- Table Header for Designation Name -->
+                        <th class="sorting text-green" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Department Name</h5>
+                        </th>
+
+
+                        <!-- Table Header for Actions -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Actions</h5>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for designation in designations %}
+                    <tr role="row" class="{% cycle 'even' 'odd' %}">
+                        <!-- Checkbox for each row -->
+                        <td class="action-checkbox">
+                            <input type="checkbox" name="_selected_action" value="{{ designation.id }}"
+                                class="action-select"
+                                aria-label="Select this object for an action - Designation {{ designation.name }}">
+                        </td>
+
+                        <!-- Designation Name -->
+                        <th class="field-__str__">
+                            <a class="link" href="{% url 'designation_update' designation.id %}">
+                                {{ designation.name }}
+                            </a>
+                        </th>
+
+  
+                        <!-- Actions -->
+                        <td class="field-actions">
+                            <a href="{% url 'designation_update' designation.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No designations found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,234 @@
+{% extends 'general/base.html' %}
+
+{% block content %}
+<style>
+    .chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="app-content">
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="page-description">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="card widget widget-stats">
+                        <div class="card-body">
+                            <div class="widget-stats-container d-flex">
+                                <div class="widget-stats-icon widget-stats-icon-primary">
+                                    <i class="material-icons-outlined fw-bold">K</i>
+                                </div>
+                                <div class="widget-stats-content flex-fill">
+                                    <span class="widget-stats-title">Quater's Budget</span>
+                                    <span class="widget-stats-amount">{{ planned_budget_quarter }}</span>
+                                    <span class="widget-stats-info">{{num_activities_quarter}} activities in
+                                        total</span>
+                                </div>
+                                <div class="widget-stats-indicator widget-stats-indicator-negative align-self-start">
+                                    <i class="material-icons">published_with_changes</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card widget widget-stats">
+                        <div class="card-body">
+                            <div class="widget-stats-container d-flex">
+                                <div class="widget-stats-icon widget-stats-icon-primary">
+                                    <i class="material-icons-outlined fw-bold">K</i>
+                                </div>
+                                <div class="widget-stats-content flex-fill">
+                                    <span class="widget-stats-title">Year's Budget</span>
+                                    <span class="widget-stats-amount">{{ planned_budget_year }}</span>
+                                    <span class="widget-stats-info">{{num_activities_budget}} activities in total</span>
+                                </div>
+                                <div class="widget-stats-indicator widget-stats-indicator-negative align-self-start">
+                                    <i class="material-icons">published_with_changes</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card widget widget-stats">
+                        <div class="card-body">
+                            <div class="widget-stats-container d-flex">
+                                <div class="widget-stats-icon widget-stats-icon-primary">
+                                    <i class="material-icons-outlined fw-bold">K</i>
+                                </div>
+                                <div class="widget-stats-content flex-fill">
+                                    <span class="widget-stats-title">Quater's Spent</span>
+                                    <span class="widget-stats-amount">{{ actual_spent_quarter }}</span>
+                                    <span class="widget-stats-info">{{ reported_activities_count }} activities
+                                        Reported</span>
+                                </div>
+                                <div class="widget-stats-indicator widget-stats-indicator-negative align-self-start">
+                                    <i class="material-icons">published_with_changes</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="card widget widget-stats">
+                        <div class="card-body">
+                            <div class="widget-stats-container d-flex">
+                                <div class="widget-stats-icon widget-stats-icon-warning">
+                                    <i class="material-icons-outlined">task_alt</i>
+                                </div>
+                                <div class="widget-stats-content flex-fill">
+                                    <span class="widget-stats-title">Activities Completed</span>
+                                    <span class="widget-stats-amount">{{ completed_activities_quarter }}</span>
+                                </div>
+                                <div class="widget-stats-indicator align-self-start">
+                                    <i class="material-icons">keyboard_arrow_down</i> {{reports_quarter_percentage}}%
+                                </div>
+                            </div>
+                            <div class="widget-stats-chart">
+                                <div id="widget-stats-chart1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card widget widget-stats">
+                        <div class="card-body">
+                            <div class="widget-stats-container d-flex">
+                                <div class="widget-stats-icon widget-stats-icon-danger">
+                                    <i class="material-icons-outlined">close</i>
+                                </div>
+                                <div class="widget-stats-content flex-fill">
+                                    <span class="widget-stats-title">Failed Activities</span>
+                                    <span class="widget-stats-amount">{{failed_activities_quarter}}</span>
+                                </div>
+                                <div class="widget-stats-indicator align-self-start">
+                                    <i class="material-icons">keyboard_arrow_up</i> {{failed_quarter_percentage}}%
+                                </div>
+                            </div>
+                            <div class="widget-stats-chart">
+                                <div id="widget-stats-chart2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xl-4">
+                    <div class="card widget widget-list">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                Strategic Themes
+                                <span class="badge badge-success badge-style-light">
+                                    {{ overall_progress|floatformat:0 }}% total
+                                </span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <span class="text-muted m-b-xs d-block">
+                                Showing {{ total_reported_activities }} out of {{ total_created_activities }} reported
+                                activities.
+                            </span>
+                            <ul class="widget-list-content list-unstyled">
+                                {% for theme in themes_progress %}
+                                <li class="widget-list-item 
+                                           {% if theme.progress >= 75 %}
+                                               widget-list-item-green
+                                           {% elif theme.progress >= 50 %}
+                                               widget-list-item-orange
+                                           {% elif theme.progress >= 25 %}
+                                               widget-list-item-yellow
+                                           {% else %}
+                                               widget-list-item-red
+                                           {% endif %}">
+                                    <span class="widget-list-item-icon">
+                                        <i class="material-icons-outlined">article</i>
+                                    </span>
+                                    <span class="widget-list-item-description">
+                                        <a href="#" class="widget-list-item-description-title">
+                                            {{ theme.theme }}
+                                        </a>
+                                        <span class="widget-list-item-description-progress">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width: {{ theme.progress|floatformat:0 }}%;"
+                                                    aria-valuenow="{{ theme.progress|floatformat:0 }}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ theme.progress|floatformat:0 }}%
+                                                </div>
+                                            </div>
+                                            <small>
+                                                {{ theme.reported_activities }} of {{ theme.created_activities }}
+                                                reported
+                                            </small>
+                                        </span>
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card widget widget-list">
+                        <div class="card-header">
+                            <h5 class="card-title">Todo activities
+                                <span class="badge badge-success badge-style-light">
+                                    {{ sub_activities.count }} active
+                                </span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <span class="text-muted m-b-xs d-block">
+                                Showing {{ sub_activities|length }} sub-activities this quarter.
+                            </span>
+                            <ul class="widget-list-content list-unstyled">
+                                {% for activity in sub_activities %}
+                                <li class="widget-list-item widget-list-item-yellow">
+                                    <span class="widget-list-item-check">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value="">
+                                        </div>
+                                    </span>
+                                    <span class="widget-list-item-description">
+                                        <a href="#" class="widget-list-item-description-title">
+                                            {{ activity.name }}
+                                        </a>
+                                        <span class="widget-list-item-description-subtitle">
+                                            Start Date: {{ activity.start_date|date:"M d, Y" }}
+                                        </span>
+                                    </span>
+                                </li>
+                                {% empty %}
+                                <li class="widget-list-item widget-list-item-red">
+                                    <span class="widget-list-item-description">
+                                        <a href="#" class="widget-list-item-description-title">
+                                            No sub-activities available.
+                                        </a>
+                                    </span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

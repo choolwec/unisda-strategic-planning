@@ -1,0 +1,102 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="example-container">
+            <div class="example-content bg-light">
+                <div class="section-description d-flex align-items-center">
+                    <div class="section-description-content flex-grow-1">
+                        <h1 class="">Activity List</h1>
+                    </div>
+                    <div class="section-description-actions">
+                        <a href="{% url 'admin_plans' %}" class="btn btn-dark">
+                            <i class="material-icons-outlined">next_plan</i>Activity Plans
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-5 p-0">
+            <table id="result_list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <!-- Select All Checkbox -->
+                        <th class="djn-checkbox-select-all" tabindex="0" rowspan="1" colspan="1">
+                            <div class="text">
+                                <span>
+                                    <input type="checkbox" id="action-toggle"
+                                        aria-label="Select all objects on this page for an action">
+                                </span>
+                            </div>
+                        </th>
+
+                        <!-- Table Header for Activity Name -->
+                        <th class="sorting text-green" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Activity Name</h5>
+                        </th>
+
+                        <!-- Table Header for Description -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Description</h5>
+                        </th>
+
+                        <!-- Table Header for Estimated Amount -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Estimated Amount</h5>
+                        </th>
+
+                        <!-- Table Header for Actual Amount -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Start Date</h5>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr role="row" class="{% cycle 'even' 'odd' %}">
+                        <!-- Checkbox for each row -->
+                        <td class="action-checkbox">
+                            <input type="checkbox" name="_selected_action" value="{{ activity.id }}"
+                                class="action-select"
+                                aria-label="Select this object for an action - {{ activity.name }}">
+                        </td>
+
+                        <!-- Activity Name -->
+                        <th class="field-__str__">
+                            <a class="link" href="{% url 'activity_update' activity.id %}">
+                                {{ activity.name }}
+                            </a>
+                        </th>
+
+                        <!-- Activity Description -->
+                        <td class="field-description">
+                            {{ activity.description }}
+                        </td>
+
+                        <!-- Estimated Amount -->
+                        <td class="field-estimated-amount">
+                            {{ activity.estimated_amount|floatformat:2 }}
+                        </td>
+
+                        <!-- Associated KPI -->
+                        <td class="field-start date">
+                            {{ activity.start_date }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            No activities found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

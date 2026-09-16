@@ -1,0 +1,763 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/forms.css' %}">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+
+<main id="main" class="main">
+    <div class="pagetitle" style="margin-left: 15px;">
+        {% if page_name == 'strategic_theme_create' %}
+        <h1>Add New Strategic Theme</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Strategic Theme</a></li>
+            <li>Add Strategic Theme</li>
+        </ul>
+
+        {% elif page_name == 'strategic_theme_update' %}
+        <h1>Update Strategic Theme</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Strategic Theme</a></li>
+            <li>update Strategic Theme</li>
+        </ul>
+
+        {% elif page_name == 'strategic_objective_create' %}
+        <h1>Create Strategic Objective</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Strategic Objective</a></li>
+            <li>Create Strategic objective</li>
+        </ul>
+
+        {% elif page_name == 'strategic_objective_update' %}
+        <h1>Update Strategic Objective</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Strategic Objective</a></li>
+            <li>Update Strategic objective</li>
+        </ul>
+
+        {% elif page_name == 'kpi_create' %}
+        <h1>Create Kpi</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'kpi_list' %}">Kpi</a></li>
+            <li>Create Kpi</li>
+        </ul>
+
+        {% elif page_name == 'kpi_update' %}
+        <h1>Update Kpi</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'kpi_list' %}">Kpi</a></li>
+            <li>update Kpi</li>
+        </ul>
+
+        {% elif page_name == 'activity_create' %}
+        <h1>Add Activity</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'activity_list' %}">Activities</a></li>
+            <li>Add Activity</li>
+        </ul>
+
+        {% elif page_name == 'activity_update' %}
+        <h1>Update Activity</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'activity_list' %}">Activities</a></li>
+            <li>Update Activity</li>
+        </ul>
+
+        {% elif page_name == 'user_update' %}
+        <h1>Update user</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'user_list' %}">Activities</a></li>
+            <li>Update user</li>
+        </ul>
+
+        {% elif page_name == 'user_create' %}
+        <h1>create user</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'user_list' %}">Activities</a></li>
+            <li>create user</li>
+        </ul>
+        {% elif page_name == 'report_create' %}
+        <h1>create report</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'report_list' %}">Activities</a></li>
+            <li>create report</li>
+        </ul>
+        {% elif page_name == 'report_update' %}
+        <h1>update report</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'report_list' %}">Activities</a></li>
+            <li>update report</li>
+        </ul>
+
+        {% elif page_name == 'designation_create' %}
+        <h1>Departments</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'designation_list' %}">Activities</a></li>
+            <li>create designation</li>
+        </ul>
+
+        {% elif page_name == 'designation_update' %}
+        <h1>Update Department</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'designation_list' %}">Activities</a></li>
+            <li>Update department</li>
+        </ul>
+
+        {% elif page_name == 'role_create' %}
+        <h1>Create Position</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'role_list' %}">Activities</a></li>
+            <li>Create Position</li>
+        </ul>
+        {% else %}
+        <h1>Update Position</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'role_list' %}">Activities</a></li>
+            <li>Update Position</li>
+        </ul>
+        {% endif %}
+    </div>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card pt-5 pb-5">
+                            <div class="card-body">
+                                {% if page_name == 'strategic_theme_create' or page_name == 'strategic_theme_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Theme Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.theme_name.id_for_label }}"
+                                                        class="form-label box">Theme:</label>
+                                                    {{ form.theme_name }}
+                                                </div>
+                                                {% if form.theme_name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.theme_name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Description -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.description.id_for_label }}"
+                                                        class="form-label box">Description:</label>
+                                                    {{ form.description }}
+                                                </div>
+                                                {% if form.description.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.description.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                           
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <button type="cancel" class="btn btn-danger w-100">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% elif page_name == 'strategic_objective_create' or page_name == 'strategic_objective_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Objective Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.objective_name.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.objective_name.label }}:
+                                                    </label>
+                                                    {{ form.objective_name }}
+                                                </div>
+                                                {% if form.objective_name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.objective_name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Strategic Theme -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.strategic_theme.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.strategic_theme.label }}:
+                                                    </label>
+                                                    {{ form.strategic_theme }}
+                                                </div>
+                                                {% if form.strategic_theme.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.strategic_theme.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Designation -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.designation.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.designation.label }}:
+                                                    </label>
+                                                    {{ form.designation }}
+                                                </div>
+                                                {% if form.designation.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.designation.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <button type="cancel" class="btn btn-danger w-100">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                                {% elif page_name == 'kpi_update' or page_name == 'kpi_create'  %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- KPI Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}" class="form-label box">
+                                                        {{ form.name.label }}:
+                                                    </label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Strategic Objective -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.strategic_objective.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.strategic_objective.label }}:
+                                                    </label>
+                                                    {{ form.strategic_objective }}
+                                                </div>
+                                                {% if form.strategic_objective.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.strategic_objective.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <a href="{% url 'kpi_list' %}" class="btn btn-danger w-100">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+
+                                {% elif page_name == 'activity_create' or page_name == 'activity_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Activity Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}" class="form-label box">
+                                                        {{ form.name.label }}:
+                                                    </label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity Description -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.description.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.description.label }}:
+                                                    </label>
+                                                    {{ form.description }}
+                                                </div>
+                                                {% if form.description.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.description.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity Start Date -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.start_date.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.start_date.label }}:
+                                                    </label>
+                                                    {{ form.start_date }}
+                                                </div>
+                                                {% if form.start_date.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.start_date.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <!-- Activity end Date -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.end_date.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.end_date.label }}:
+                                                    </label>
+                                                    {{ form.end_date }}
+                                                </div>
+                                                {% if form.end_date.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.end_date.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Associated KPI -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.kpi.id_for_label }}" class="form-label box">
+                                                        {{ form.kpi.label }}:
+                                                    </label>
+                                                    {{ form.kpi }}
+                                                </div>
+                                                {% if form.kpi.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.kpi.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Estimated Budget Amount -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.estimated_amount.id_for_label }}"
+                                                        class="form-label box">
+                                                        {{ form.estimated_amount.label }}:
+                                                    </label>
+                                                    {{ form.estimated_amount }}
+                                                </div>
+                                                {% if form.estimated_amount.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.estimated_amount.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-4">
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <div class="mt-3">
+                                                <button type="submit" class="btn btn-green w-100">Save and Add</button>
+                                            </div>
+                                            <div class="mt-3">
+                                                <a href="{% url 'activity_list' %}"
+                                                    class="btn btn-danger w-100">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% elif page_name == 'user_create' or page_name == 'user_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Username -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.first_name.id_for_label }}"
+                                                        class="form-label box">first name:</label>
+                                                    {{ form.first_name }}
+                                                </div>
+                                                {% if form.username.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.username.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.last_name.id_for_label }}"
+                                                        class="form-label box">last name:</label>
+                                                    {{ form.last_name }}
+                                                </div>
+                                                {% if form.last_name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.last_name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.email.id_for_label }}"
+                                                        class="form-label box">Email:</label>
+                                                    {{ form.email }}
+                                                </div>
+                                                {% if form.email.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.email.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Password -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.password.id_for_label }}"
+                                                        class="form-label box">Password:</label>
+                                                    {{ form.password }}
+                                                </div>
+                                                {% if form.password.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.password.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Contact -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.contact.id_for_label }}"
+                                                        class="form-label box">Contact:</label>
+                                                    {{ form.contact }}
+                                                </div>
+                                                {% if form.contact.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.contact.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- physical_address -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.physical_address.id_for_label }}"
+                                                        class="form-label box">physical_address:</label>
+                                                    {{ form.physical_address }}
+                                                </div>
+                                                {% if form.physical_address.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.physical_address.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Role -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.role.id_for_label }}"
+                                                        class="form-label box">Role:</label>
+                                                    {{ form.role }}
+                                                </div>
+                                                {% if form.role.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.role.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- designation -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.designation.id_for_label }}"
+                                                        class="form-label box">Departments:</label>
+                                                    {{ form.designation }}
+                                                </div>
+                                                {% if form.designation.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.designation.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- is_active -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.is_active.id_for_label }}"
+                                                        class="form-label box">Active:</label>
+                                                    {{ form.is_active }}
+                                                </div>
+                                                {% if form.is_active.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.is_active.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Save and Add Button -->
+                                            <div class="mt-3">
+                                                <button type="" class="btn btn-green w-100">Save and add</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <button type="cancel" href="{% url 'user_list' %}"
+                                                    class="btn btn-danger w-100">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% elif page_name == 'report_create' or page_name == 'report_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Quarter -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.quarter.id_for_label }}"
+                                                        class="form-label box">Quarter:</label>
+                                                    {{ form.quarter }}
+                                                </div>
+                                                {% if form.quarter.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.quarter.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- User -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.user.id_for_label }}"
+                                                        class="form-label box">User:</label>
+                                                    {{ form.user }}
+                                                </div>
+                                                {% if form.user.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.user.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Designation -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.designation.id_for_label }}"
+                                                        class="form-label box">Designation:</label>
+                                                    {{ form.designation }}
+                                                </div>
+                                                {% if form.designation.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.designation.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.activity.id_for_label }}"
+                                                        class="form-label box">Activity:</label>
+                                                    {{ form.activity }}
+                                                </div>
+                                                {% if form.activity.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.activity.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Report Details -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.report_details.id_for_label }}"
+                                                        class="form-label box">Report Details:</label>
+                                                    {{ form.report_details }}
+                                                </div>
+                                                {% if form.report_details.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.report_details.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Save and Add Button -->
+                                            <div class="mt-3">
+                                                <button type="submit" name="save_and_add"
+                                                    class="btn btn-green w-100">Save and Add</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <a href="{% url 'your_cancel_url_name' %}"
+                                                    class="btn btn-danger w-100">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% elif page_name == 'role_create' or page_name == 'role_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+
+                                            <!-- Role Name -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}"
+                                                        class="form-label box">Role Name:</label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Save and Add Button -->
+                                            <div class="mt-3">
+                                                <button type="submit" class="btn btn-green w-100">Save and add</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <button type="button" class="btn btn-danger w-100">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% elif page_name == 'designation_create' or page_name == 'designation_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <!-- Designation Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}"
+                                                        class="form-label box">Department Name:</label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-4">
+                                            <!-- Save Button -->
+                                            <div>
+                                                <button type="submit" class="btn btn-success w-100">Save</button>
+                                            </div>
+                                            <!-- Save and Add Button -->
+                                            <div class="mt-3">
+                                                <button type="submit" class="btn btn-green w-100">Save and add</button>
+                                            </div>
+                                            <!-- Cancel Button -->
+                                            <div class="mt-3">
+                                                <button type="button" class="btn btn-danger w-100">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% else %}
+                                <h1>Nothing here</h1>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main><!-- End #main -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let kpiIndex = 1;
+        document.getElementById('add-kpi').addEventListener('click', function() {
+            const kpiContainer = document.getElementById('kpi-container');
+            const newKpiDiv = document.createElement('div');
+            newKpiDiv.classList.add('form-group', 'mt-3');
+            newKpiDiv.innerHTML = `
+                <div class="d-flex">
+                    <label for="kpi_name_${kpiIndex}" class="form-label box">KPI Name:</label>
+                    <input type="text" name="kpi_name" class="form-control" id="kpi_name_${kpiIndex}" placeholder="Enter KPI Name">
+                </div>
+            `;
+            kpiContainer.appendChild(newKpiDiv);
+            kpiIndex++;
+        });
+    });
+    </script>
+{% endblock content %}

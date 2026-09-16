@@ -1,0 +1,272 @@
+{% extends 'general/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEJd0Zy1J9HTM6gwp1s1P0l9soFiG5wVwwr5O2z6Wm0nVwDk9wGiQKxaPgiY8" crossorigin="anonymous">
+
+<style>
+    li a {
+        color: #135761ea;
+    }
+
+    .text-green {
+        color: #135761ea !important;
+    }
+
+    .nav-pills li a:hover {
+        background-color: #17a2b8;
+    }
+
+    .nav-pills li:active {
+        background-color: #135761ea;
+        color: white;
+    }
+</style>
+<main id="main" class="main">
+    <div class="pagetitle" style="margin-left: 15px;">
+        <h1> {{theme.theme_name}}</h1>
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}">Strategic Theme</a></li>
+            <li>Add Strategic Theme</li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card pb-5">
+                            <div class="card-body">
+                                <h3 class="card-title text-green fw-bold">DEPARTMENTAL STRATEGIC PLANNING</h3>
+                                {% if page_name == 'main_activity_create' %}
+                                <h5 class="card-title text-green fw-bold pt-3">Key Performance Indicator: {{kpi.name}}
+                                </h5>
+                                <div class="pb-4">
+                                    <a href="" class="kpi-link">Note: If your activity is not a main activity skip this
+                                        part</a>
+                                </div>
+                                {% elif page_name == 'sub_activity_create' %}
+                                <h5 class="card-title text-green fw-bold pt-3">Key Performance Indicator: {{kpi.name}}
+                                </h5>
+                                <div class="pb-4">
+                                    <a href="" class="kpi-link">Note: If your activity will take part in one date only
+                                        indicate end date</a>
+                                </div>
+                                {% endif %}
+
+
+                                {% if page_name == 'objective_planning_list' %}
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <!-- Tabs for Objectives -->
+                                            <ul class="nav nav-tabs d-flex" id="objectiveTabs" role="tablist">
+                                                {% for objective in strategic_objectives %}
+                                                <li class="nav-item" role="presentation">
+                                                    <button
+                                                        class="nav-link w-100 {% if forloop.first %}active{% endif %}"
+                                                        id="objective-{{ objective.id }}-tab" data-bs-toggle="tab"
+                                                        data-bs-target="#objective-{{ objective.id }}" type="button"
+                                                        role="tab" aria-controls="objective-{{ objective.id }}"
+                                                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                                        {{ objective.objective_name }}
+                                                    </button>
+                                                </li>
+                                                {% empty %}
+                                                <li>No objectives found.</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="col-8">
+                                            <!-- Tab Content for KPIs -->
+                                            <div class="tab-content mt-3" id="objectiveTabContent">
+                                                {% for objective in strategic_objectives %}
+                                                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                                                    id="objective-{{ objective.id }}" role="tabpanel"
+                                                    aria-labelledby="objective-{{ objective.id }}-tab">
+                                                    <h5 class="text-green fw-bold">KPIs for {{ objective.objective_name}}</h5>
+                                                    <ul class="list-group">
+                                                        {% for kpi in objective.kpis.all %}
+                                                        <li class="list-group-item">
+                                                            <a href="{% url 'main_activity_create' kpi.id %}"
+                                                                class="kpi-link" data-kpi-id="{{ kpi.id }}">{{kpi.name}}</a>
+                                                        </li>
+                                                        {% empty %}
+                                                        <li class="list-group-item">No KPIs found for this objective.
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                {% elif page_name == 'main_activity_create' or page_name == 'main_activity_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <!-- Activity Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.name.label }}:
+                                                    </label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity Description -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.description.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.description.label }}:
+                                                    </label>
+                                                    {{ form.description }}
+                                                </div>
+                                                {% if form.description.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.description.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <div class="d-flex mt-5">
+                                                <a href="javascript:history.back()" class="btn btn-light">back</a>
+                                            </div>
+                                            <div class="mt-5">
+                                                <button type="submit" class="btn btn-success">Next</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% elif page_name == 'sub_activity_create' or page_name == 'sub_activity_update' %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <!-- Activity Name -->
+                                            <div class="form-group">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.name.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.name.label }}:
+                                                    </label>
+                                                    {{ form.name }}
+                                                </div>
+                                                {% if form.name.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.name.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity Description -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.description.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.description.label }}:
+                                                    </label>
+                                                    {{ form.description }}
+                                                </div>
+                                                {% if form.description.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.description.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Activity Start Date -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.start_date.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.start_date.label }}:
+                                                    </label>
+                                                    {{ form.start_date }}
+                                                </div>
+                                                {% if form.start_date.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.start_date.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <!-- Activity end Date -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.end_date.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.end_date.label }}:
+                                                    </label>
+                                                    {{ form.end_date }}
+                                                </div>
+                                                {% if form.end_date.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.end_date.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+
+                                            <!-- Estimated Budget Amount -->
+                                            <div class="form-group mt-3">
+                                                <div class="d-flex">
+                                                    <label for="{{ form.estimated_amount.id_for_label }}"
+                                                        class="form-label box-align">
+                                                        {{ form.estimated_amount.label }}:
+                                                    </label>
+                                                    {{ form.estimated_amount }}
+                                                </div>
+                                                {% if form.estimated_amount.errors %}
+                                                <div class="text-danger">
+                                                    {{ form.estimated_amount.errors.as_text }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-between">
+                                            <div class="d-flex mt-5">
+                                                <a href="javascript:history.back()" class="btn btn-dark">back</a>
+                                                <button type="submit" class="ms-3 btn btn-danger">Save & Add</button>
+                                            </div>
+                                            <div class="mt-5">
+                                                <button type="submit" class="btn btn-success">Finish</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main><!-- End #main -->
+
+
+{% endblock content %}

@@ -1,0 +1,144 @@
+.box{
+    width: 25%;
+    font-weight: bold;
+    color: #135761ea;
+}
+
+.box-align {
+    width: 30%;
+    font-weight: bold;
+    color: #135761ea;
+}
+
+.btn-success{
+    background-color: #17a2b8 !important;
+    border: none;
+}
+
+.btn-green{
+    background-color:  #17a2b8;
+}
+.text-green{
+    color: #135761ea;
+}
+
+.nav-pills li a:hover{
+    background-color: #17a2b8;
+}
+.nav-pills li:active{
+    background-color: #135761ea;
+    color: white;
+}
+    /* Add this CSS to your style.css or in a <style> tag within your HTML */
+    .form-container {
+        border: 1px solid #dddddd;
+        padding: 20px;
+        background: rgb(237, 237, 237);
+    }
+
+
+    /* Custom styles for the button layout */
+    .row.mt-3 {
+        margin-top: 1rem !important;
+    }
+
+    .col-md-6 {
+        padding: 0.5rem;
+    }
+
+    .col-md-6.text-right {
+        text-align: right;
+    }
+
+    .card {
+        background-color: #fff;
+    }
+
+    .form__group {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+
+    .form__split {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .form__group label {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 2px;
+    }
+
+    .form__group input,
+    .form__group textarea,
+    .form__group select {
+        background: #fff;
+        border: 1px solid gray;
+        padding: 2px;
+        border-radius: 3px;
+        width: 100%;
+        color: black;
+        font-weight: 300;
+        outline: none;
+
+    }
+
+    .form__group input:focus,
+    .form__group textarea:focus {
+        border-color: var(--color-main);
+    }
+
+    .form__group textarea {
+        background: transparent;
+        height: 10rem;
+        resize: none;
+    }
+
+    .form__group select {
+        color: var(--color-gray);
+        font-weight: 400;
+    }
+
+    .form__group select option {
+        background-color: var(--color-dark-light);
+        color: var(--color-light);
+        padding: 0 10rem;
+    }
+
+    /*BreadCrumb styling*/
+    ul.breadcrumb {
+        margin-top: -25px;
+        list-style: none;
+    }
+
+    .breadcrumb {
+        padding-right: 12px;
+        justify-content: right;
+    }
+
+    /* Display list items side by side */
+    ul.breadcrumb li {
+        display: inline;
+        font-size: small;
+
+    }
+
+    /* Add a slash symbol (/) before/behind each list item */
+    ul.breadcrumb li+li:before {
+        padding: 8px;
+        color: black;
+        content: "/\00a0";
+    }
+
+    /* Add a color to all links inside the list */
+    ul.breadcrumb li a {
+        color: #135761ea;
+        text-decoration: none;
+    }
+
+    /* Add a color on mouse-over */
+    ul.breadcrumb li a:hover {
+        color: #135761;
+        text-decoration: underline;
+    }

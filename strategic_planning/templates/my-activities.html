@@ -1,0 +1,199 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="example-container">
+            <div class="example-content bg-light">
+                <div class="section-description d-flex align-items-center">
+                    <div class="section-description-content flex-grow-1">
+                        <h1 class="">Activities</h1>
+                    </div>
+                    <div class="section-description-actions">
+                        <a href="{% url 'generate_activities_report' %}" class="btn btn-dark">
+                            <i class="material-icons-outlined">print</i> Generate Plan
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if page_name == 'generate_activities_report' %}
+        <div class="container mt-3 mb-5">
+            <h5 class="text-green fw-bold">Generate Report</h5>
+            <div class="list-group">
+                <form action="{% url 'department_plan' %}" method="GET" class="form-inline">
+                    <div class="row g-3 align-items-center">
+                        <!-- Dropdown for Years -->
+                        <div class="col-md-6">
+                            <label for="year" class="form-label text-green">Select Year</label>
+                            <select name="year" id="year" class="form-select">
+                                {% for year in years %}
+                                <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Quarter (Optional) -->
+                        <div class="col-md-3">
+                            <label for="quarter" class="form-label text-green">Quarter</label>
+                            <select class="form-control" id="quarter" name="quarter">
+                                <option value="">-- Select Quarter --</option>
+                                <option value="1" {% if request.GET.quarter == '1' %}selected{% endif %}>Q1 (Jan-Mar)</option>
+                                <option value="2" {% if request.GET.quarter == '2' %}selected{% endif %}>Q2 (Apr-Jun)</option>
+                                <option value="3" {% if request.GET.quarter == '3' %}selected{% endif %}>Q3 (Jul-Sep)</option>
+                                <option value="4" {% if request.GET.quarter == '4' %}selected{% endif %}>Q4 (Oct-Dec)</option>
+                            </select>
+                        </div>
+                
+                          <!-- Month (Optional) -->
+            <div class="col-md-3">
+                <label for="month" class="form-label text-green">Month</label>
+                <select class="form-control" id="month" name="month">
+                    <option value="">-- Select Month --</option>
+                    {% for month_number, month_name in months.items %}
+                    <option value="{{ month_number }}" {% if request.GET.month == month_number|stringformat:"s" %}selected{% endif %}>
+                        {{ month_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+                    <!-- Submit Button -->
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-dark w-100">Generate Report</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <!-- Filter Form -->
+    <form method="get" class="mb-3 mt-3">
+        <div class="row">
+            <!-- Year (Mandatory) -->
+            <div class="col-md-3">
+                <label for="year" class="form-label text-green">Select Year</label>
+                <select name="year" id="year" class="form-select">
+                    {% for year in years %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="quarter" class="form-label text-green">Quarter</label>
+                <select class="form-control" id="quarter" name="quarter">
+                    <option value="">-- Select Quarter --</option>
+                    <option value="1" {% if request.GET.quarter == '1' %}selected{% endif %}>Q1 (Jan-Mar)</option>
+                    <option value="2" {% if request.GET.quarter == '2' %}selected{% endif %}>Q2 (Apr-Jun)</option>
+                    <option value="3" {% if request.GET.quarter == '3' %}selected{% endif %}>Q3 (Jul-Sep)</option>
+                    <option value="4" {% if request.GET.quarter == '4' %}selected{% endif %}>Q4 (Oct-Dec)</option>
+                </select>
+            </div>
+                                      <!-- Month (Optional) -->
+                                      <div class="col-md-3">
+                                        <label for="month" class="form-label text-green">Month</label>
+                                        <select class="form-control" id="month" name="month">
+                                            <option value="">-- Select Month --</option>
+                                            {% for month_number, month_name in months.items %}
+                                            <option value="{{ month_number }}" {% if request.GET.month == month_number|stringformat:"s" %}selected{% endif %}>
+                                                {{ month_name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+            <!-- Filter Button -->
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-green w-100">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive mt-5 p-0">
+        <table id="result_list" class="table table-striped">
+            <thead>
+                <tr>
+                    <!-- Select All Checkbox -->
+                    <th class="djn-checkbox-select-all" tabindex="0" rowspan="1" colspan="1">
+                        <div class="text">
+                            <span>
+                                <input type="checkbox" id="action-toggle"
+                                    aria-label="Select all objects on this page for an action">
+                            </span>
+                        </div>
+                    </th>
+
+                    <!-- Table Header for Activity Name -->
+                    <th class="sorting text-green" tabindex="0" rowspan="1" colspan="1">
+                        <h5 class="text text-green">Main Activity</h5>
+                    </th>
+
+                    <th class="sorting text-green" tabindex="0" rowspan="1" colspan="1">
+                        <h5 class="text text-green">Sub Activity</h5>
+                    </th>
+
+                    <!-- Table Header for Description -->
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                        <h5 class="text text-green">Description</h5>
+                    </th>
+
+                    <!-- Table Header for Estimated Amount -->
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                        <h5 class="text text-green">Period</h5>
+                    </th>
+
+                    <!-- Table Header for Actual Amount -->
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                        <h5 class="text text-green">Estimated Amount</h5>
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                <tr role="row" class="{% cycle 'even' 'odd' %}">
+                    <!-- Checkbox for each row -->
+                    <td class="action-checkbox">
+                        <input type="checkbox" name="_selected_action" value="{{ activity.id }}" class="action-select"
+                            aria-label="Select this object for an action - {{ activity.name }}">
+                    </td>
+
+                    <!-- Main Activity -->
+                    <td>
+                        {{ activity.main_activity.name }}
+                    </td>
+
+                    <!-- Sub Activity -->
+                    <td>
+                        {{ activity.name }}
+                    </td>
+
+                    <!-- Description -->
+                    <td>
+                        {{ activity.description }}
+                    </td>
+
+                    <!-- Period -->
+                    <td>
+                        {{ activity.start_date|date:"Y-m-d" }} to {{ activity.end_date|date:"Y-m-d" }}
+                    </td>
+
+                    <!-- Estimated Amount -->
+                    <td>
+                        {{ activity.estimated_amount|floatformat:2 }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">
+                        No activities found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock content %}

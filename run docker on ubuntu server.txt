@@ -1,0 +1,33 @@
+//update packages
+sudo apt update
+
+// install prerequisites need to install HttpS repositories
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+
+// add dockers GPG keys
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+// setup stable repositories
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+// update with docker packages
+sudo apt update
+
+// install docker
+sudo apt install -y docker-ce
+
+// install docker composer
+sudo apt install docker-compose
+
+// build docker containers
+sudo docker-composer build --no-cache
+
+// start docker containers
+docker-compose up -d
+
+// check logs
+docker-compose logs web
+
+// stop drop docker containers
+sudo docker-compose down
+

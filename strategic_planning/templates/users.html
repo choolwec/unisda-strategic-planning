@@ -1,0 +1,121 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="example-container">
+            <div class="example-content bg-light">
+                <div class="section-description d-flex align-items-center">
+                    <div class="section-description-content flex-grow-1">
+                        <h1 class="">User List</h1>
+                    </div>
+                    
+                    <div class="section-description-actions">
+                        
+                        <a href="{% url 'user_create' %}" class="btn btn-green">
+                            <i class="material-icons">add</i>Create User
+                        </a>
+                    </div>
+
+                </div>
+                <!-- Search Form -->
+                <form method="GET" action="{% url 'user_list' %}" class="form-inline me-2  my-lg-0 d-flex justify-content-end">
+                    {% csrf_token %}
+                    <div class="input-group w-25">
+                        <input class="form-control " class="border-rounded-3" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ request.GET.q }}">
+                        <div class="input-group-append">
+                            <button class="btn bg-light border-transparent d-none" type="submit">
+                                <i class="material-icons text-dark">search</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive mt-5 p-0">
+            <table id="result_list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <!-- Select All Checkbox -->
+                        <th class="djn-checkbox-select-all" tabindex="0" rowspan="1" colspan="1">
+                            <div class="text">
+                                <span>
+                                    <input type="checkbox" id="action-toggle"
+                                        aria-label="Select all objects on this page for an action">
+                                </span>
+                            </div>
+                        </th>
+
+                        <!-- Table Header for Username -->
+                        <th class="sorting text-green" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Username</h5>
+                        </th>
+
+                        <!-- Table Header for Email -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Position</h5>
+                        </th>
+
+                        <!-- Table Header for First Name -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Department</h5>
+                        </th>
+
+                        <!-- Table Header for Actions -->
+                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <h5 class="text text-green">Actions</h5>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr role="row" class="{% cycle 'even' 'odd' %}">
+                        <!-- Checkbox for each row -->
+                        <td class="action-checkbox">
+                            <input type="checkbox" name="_selected_action" value="{{ user.id }}"
+                                class="action-select"
+                                aria-label="Select this object for an action - User {{ user.username }}">
+                        </td>
+
+                        <!-- email -->
+                        <th class="field-__str__">
+                            <a class="link" href="{% url 'user_update' user.id %}">
+                                 {{ user.email }}
+                            </a>
+                        </th>
+
+                        <!-- First Name -->
+                        <td class="field-first-name">
+                            {{ user.role }}
+                        </td>
+
+                    <!-- Designation -->
+                    <td class="field-designations">
+                        {% if user.designation.exists %}
+                            {% for designation in user.designation.all %}
+                                <span class="badge badge-primary">{{ designation.name }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">No Departments</span>
+                        {% endif %}
+                    </td>
+
+                        <!-- Actions -->
+                        <td class="field-actions">
+                            <a href="{% url 'user_update' user.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            No users found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

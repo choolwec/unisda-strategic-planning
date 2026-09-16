@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Strategic Planning system">
+    <meta name="keywords" content="Strategic Planning">
+    <meta name="author" content="Simbarashe Kapundu">
+    <!-- The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    {% load static %}
+
+    <style>
+        .app-login-background {
+            background-image: url("{% static 'assets/images/sda-nobg.png' %}");
+            background-size: cover;
+            background-position: top;
+        }
+    </style>
+    <!-- Title -->
+    <title>University Church Strategic Planning</title>
+
+    <!-- Styles -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
+    <link href="/static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/assets/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
+    <link href="/static/assets/plugins/pace/pace.css" rel="stylesheet">
+    <link href="/static/assets/css/main.min.css" rel="stylesheet">
+    <link href="/static/assets/css/custom.css" rel="stylesheet">
+    <link href="/static/assets/css/forms.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEJd0Zy1J9HTM6gwp1s1P0l9soFiG5wVwwr5O2z6Wm0nVwDk9wGiQKxaPgiY8" crossorigin="anonymous">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/images/sda.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/images/sda.png" />
+</head>
+<style>
+    /* Modal Styles */
+    #contact-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+    #contact-modal button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    #contact-modal button:hover {
+        background: #0056b3;
+    }
+    #modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+</style>
+<body>
+    <div class=" row app app-auth-sign-in align-content-stretch d-flex justify-content-end">
+        <div class="col-12 col-lg-6 app-login-background d-flex flex-column justify-content-center">
+            <h5 class="text-green fw-bold text-center align-self-center w-75">
+                Strategic planning empowers organizations to define goals, align resources, and anticipate challenges.
+                This web app streamlines planning processes, fosters collaboration, and ensures data-driven decisions
+                for achieving long-term success effectively.
+            </h5>
+        </div>
+        <div class="col-12 col-lg-6 app-auth-container pt-5">
+            <div class="d-flex">
+                <img src="{% static 'assets/images/sda-nobg.png' %}" width="70px" class="me-3" set="">
+                <h3 class="align-self-end text-green text-uppercase fw-bold">Strategic Planning</h3>
+            </div>
+            <p class="auth-description">
+                Please sign in to your account to access the dashboard.<br>
+                Don't have an account? Contact Church Clerk: 
+                <a href="mailto:admin@example.com" id="email-link">Email</a>
+            </p>
+            
+            <!-- Modal -->
+            <div id="modal-overlay"></div>
+            <div id="contact-modal">
+                <p><strong>Contact Clerk:</strong></p>
+                <p>Email: <a href="mailto:admin@example.com">admin@example.com</a></p>
+                <p>Phone: <a href="tel:+1234567890">+1234567890</a></p>
+                <button class="text-green" onclick="closeModal()">Close</button>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Login Form -->
+            <form method="post" action="" class="auth-credentials m-b-xxl">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_username" class="form-label">Email address</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group mt-3">
+                    <label for="id_password" class="form-label">Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-success mt-3">Sign In</button>
+            </form>
+
+            <!-- Additional Links -->
+            <div class="auth-submit">
+                <a href="#" class="auth-forgot-password float-end" id="phone-link">Forgot password?</a>
+            </div>
+            <div class="divider"></div>
+
+        </div>
+    </div>
+
+    <!-- Javascripts -->
+    <script src="/static/assets/plugins/jquery/jquery-3.5.1.min.js"></script>
+    <script src="/static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/assets/plugins/perfectscroll/perfect-scrollbar.min.js"></script>
+    <script src="/static/assets/plugins/pace/pace.min.js"></script>
+    <script src="/static/assets/js/main.min.js"></script>
+    <script src="/static/assets/js/custom.js"></script>
+
+
+    <script>
+        const emailLink = document.getElementById('email-link');
+        const phoneLink = document.getElementById('phone-link');
+        const modal = document.getElementById('contact-modal');
+        const overlay = document.getElementById('modal-overlay');
+    
+        // Fallback to Modal
+        emailLink.addEventListener('click', function (e) {
+            if (!supportsEmail()) {
+                e.preventDefault();
+                showModal();
+            }
+        });
+    
+        phoneLink.addEventListener('click', function (e) {
+            if (!supportsPhone()) {
+                e.preventDefault();
+                showModal();
+            }
+        });
+    
+        function supportsEmail() {
+            return navigator.userAgent.toLowerCase().includes('mail') || navigator.userAgent.toLowerCase().includes('outlook');
+        }
+    
+        function supportsPhone() {
+            return navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone');
+        }
+    
+        function showModal() {
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+    
+        function closeModal() {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+    </script>
+    
+
+</body>
+
+</html>
